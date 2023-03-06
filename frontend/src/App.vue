@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
+import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-      </nav>
-    </div>
-  </header>
-  <RouterView />
+  <main class="container mx-auto">
+    <header class="mb-8 h-32 flex w-full items-center">
+      <h1 class="font-semibold">Weather Display Application</h1>
+    </header>
+
+    <RouterView />
+  </main>
 </template>
 
 <style scoped>

@@ -1,31 +1,29 @@
 <script>
 export default {
   data: () => ({
-    apiResponse: null
+    apiResponse: null,
   }),
 
   created() {
-    this.fetchData()
+    this.fetchData();
   },
 
   methods: {
     async fetchData() {
-      const url = 'http://localhost/'
-      this.apiResponse = await (await fetch(url)).json()
-    }
-  }
-}
+      const url = "http://localhost/";
+      this.apiResponse = await (await fetch(url)).json();
+    },
+  },
+};
 </script>
 
 <template>
-  <div v-if="!apiResponse">
-    Pinging the api...
-  </div>
+  <div v-if="!apiResponse">Pinging the api...</div>
 
   <div v-if="apiResponse">
     The api responded with: <br />
     <code>
-    {{ apiResponse }}
+      {{ apiResponse }}
     </code>
   </div>
 </template>

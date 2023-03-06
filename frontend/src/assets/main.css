@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html, body {
+        @apply font-serif font-normal;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+}
