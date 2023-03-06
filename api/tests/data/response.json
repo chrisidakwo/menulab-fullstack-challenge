@@ -1,0 +1,94 @@
+{
+  "@context": [
+    "https://geojson.org/geojson-ld/geojson-context.jsonld",
+    {
+      "@version": "1.1",
+      "wx": "https://api.weather.gov/ontology#",
+      "s": "https://schema.org/",
+      "geo": "http://www.opengis.net/ont/geosparql#",
+      "unit": "http://codes.wmo.int/common/unit/",
+      "@vocab": "https://api.weather.gov/ontology#",
+      "geometry": {
+        "@id": "s:GeoCoordinates",
+        "@type": "geo:wktLiteral"
+      },
+      "city": "s:addressLocality",
+      "state": "s:addressRegion",
+      "distance": {
+        "@id": "s:Distance",
+        "@type": "s:QuantitativeValue"
+      },
+      "bearing": {
+        "@type": "s:QuantitativeValue"
+      },
+      "value": {
+        "@id": "s:value"
+      },
+      "unitCode": {
+        "@id": "s:unitCode",
+        "@type": "@id"
+      },
+      "forecastOffice": {
+        "@type": "@id"
+      },
+      "forecastGridData": {
+        "@type": "@id"
+      },
+      "publicZone": {
+        "@type": "@id"
+      },
+      "county": {
+        "@type": "@id"
+      }
+    }
+  ],
+  "id": "https://api.weather.gov/points/30.9627,-91.0017",
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -91.0017,
+      30.9627
+    ]
+  },
+  "properties": {
+    "@id": "https://api.weather.gov/points/30.9627,-91.0017",
+    "@type": "wx:Point",
+    "cwa": "LIX",
+    "forecastOffice": "https://api.weather.gov/offices/LIX",
+    "gridId": "LIX",
+    "gridX": 31,
+    "gridY": 132,
+    "forecast": "https://api.weather.gov/gridpoints/LIX/31,132/forecast",
+    "forecastHourly": "https://api.weather.gov/gridpoints/LIX/31,132/forecast/hourly",
+    "forecastGridData": "https://api.weather.gov/gridpoints/LIX/31,132",
+    "observationStations": "https://api.weather.gov/gridpoints/LIX/31,132/stations",
+    "relativeLocation": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -91.110346,
+          30.973378
+        ]
+      },
+      "properties": {
+        "city": "Norwood",
+        "state": "LA",
+        "distance": {
+          "unitCode": "wmoUnit:m",
+          "value": 10426.647370955
+        },
+        "bearing": {
+          "unitCode": "wmoUnit:degree_(angle)",
+          "value": 96
+        }
+      }
+    },
+    "forecastZone": "https://api.weather.gov/zones/forecast/LAZ036",
+    "county": "https://api.weather.gov/zones/county/LAC037",
+    "fireWeatherZone": "https://api.weather.gov/zones/fire/LAZ036",
+    "timeZone": "America/Chicago",
+    "radarStation": "KLIX"
+  }
+}

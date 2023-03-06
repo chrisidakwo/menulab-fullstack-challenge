@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [UserController::class, 'index']);
-Route::get('/{user}/weather/{coordinate}', [UserController::class, 'getUserWeatherDetails']);
+Route::get('/', [UserController::class, 'index'])->name('index');
+Route::get('/{user}/weather', [UserController::class, 'getUserWeatherDetails'])->name('detail');
 
 
 // - Location

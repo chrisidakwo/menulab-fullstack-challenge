@@ -48,8 +48,8 @@ class UserService
         return $data;
     }
 
-    private function getCacheKey($latitude, $longitude, $id): string
+    private function getCacheKey(bool $highlight, string $latitude, string $longitude, int $id): string
     {
-        return sprintf("%s_%s_%s", $id, $longitude, $latitude);
+        return sprintf("%s_%s_%s_%s", $id, (int) $highlight, $longitude, $latitude);
     }
 }

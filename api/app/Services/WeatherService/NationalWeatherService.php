@@ -11,9 +11,13 @@ class NationalWeatherService implements WeatherService
     protected static string $baseUrl = 'https://api.weather.gov/points';
 
     /**
-     * @inheritDoc
+     * @param bool $highlight
+     * @param string $latitude
+     * @param string $longitude
+     *
+     * @return array
      */
-    public function getWeatherHighlight(string $latitude, string $longitude): array
+    protected function getWeatherData(bool $highlight, string $latitude, string $longitude): array
     {
         $url = $this->getWeatherApiUrl($latitude, $longitude);
 
@@ -32,11 +36,19 @@ class NationalWeatherService implements WeatherService
                 'state' => $properties['relativeLocation']['properties']['state'],
             ];
 
-            return $this->getForecastSummary($properties['forecast'], [
-                'location' => $location,
-                'longitude' => $longitude,
-                'latitude' => $latitude,
-            ]);
+            return match ($highlight) {
+                true  => $this->getForecastSummary($properties['forecast'], [
+                    'location' => $location,
+                    'longitude' => $longitude,
+                    'latitude' => $latitude,
+                ]),
+
+                false => $this->getForecastGridData($properties['forecast'], [
+                    'location' => $location,
+                    'longitude' => $longitude,
+                    'latitude' => $latitude,
+                ]),
+            };
         }
 
         return [];
@@ -45,29 +57,17 @@ class NationalWeatherService implements WeatherService
     /**
      * @inheritDoc
      */
+    public function getWeatherHighlight(string $latitude, string $longitude): array
+    {
+        return $this->getWeatherData(true, $latitude, $longitude);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getWeatherDetails(string $latitude, string $longitude): array
     {
-        $url = $this->getWeatherApiUrl($latitude, $longitude);
-
-        $response = Http::get($url);
-
-        if ($response->ok()) {
-            $properties = $response->json()['properties'];
-
-            // We need this updated in case we have to work with datetime.
-            config([
-                'app.timezone' => $properties['timeZone']
-            ]);
-
-            $location = [
-                'city' => $properties['relativeLocation']['properties']['city'],
-                'state' => $properties['relativeLocation']['properties']['state'],
-            ];
-
-            return $this->getForecastGridData($properties['forecastGridData']);
-        }
-
-        return [];
+        return $this->getWeatherData(false, $latitude, $longitude);
     }
 
     /**
@@ -121,24 +121,50 @@ class NationalWeatherService implements WeatherService
 
     /**
      * @param string $url
+     * @param array $data
      *
      * @return array
      */
-    protected function getForecastGridData(string $url): array
+    protected function getForecastGridData(string $url, array $data): array
     {
         $response = Http::get($url);
+
+        $series = [];
 
         if ($response->ok()) {
             $properties  = $response->json()['properties'];
 
-            $temperature = $properties['temperature'];
-            $precipitation = $properties['probabilityOfPrecipitation'];
-            $humidity = $properties['relativeHumidity'];
-            $wind = $properties['windSpeed'];
-            $visibility = $properties['visibility'];
+            $periods = $properties['periods'];
+
+            foreach ($periods as $period) {
+                $series[$period['name']] = [
+                    'isDayTime' => $period['isDaytime'],
+                    'temperature' => [
+                        'value' => $period['temperature'],
+                        'unit' => $period['temperatureUnit'],
+                    ],
+                    'temperatureTrend' => $period['temperatureTrend'],
+                    'precipitation' => [
+                        'value' => $period['probabilityOfPrecipitation']['value'],
+                        'unit' => $this->getMeasurementUnit($period['probabilityOfPrecipitation']['unitCode'])
+                    ],
+                    'humidity' => [
+                        'value' => $period['relativeHumidity']['value'],
+                        'unit' => $this->getMeasurementUnit($period['relativeHumidity']['unitCode']),
+                    ],
+                    'wind' => [
+                        'speed' => $period['windSpeed'],
+                        'direction' => $period['windDirection'],
+                    ],
+                    'icon' => str_replace('medium', 'large', $period['icon']),
+                    'shortDescription' => $period['shortForecast'],
+                ];
+            }
         }
 
-        return [];
+        return array_merge($data, [
+            'series' => $series,
+        ]);
     }
 
     /**

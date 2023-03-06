@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Psr\SimpleCache\InvalidArgumentException;
 
 class UserController extends Controller
 {
@@ -23,16 +24,22 @@ class UserController extends Controller
         ]);
     }
 
-    public function getUserWeatherDetails(Request $request, User $user, string $coordinate): JsonResponse
+    /**
+     * @param Request $request
+     * @param User $user
+     *
+     * @return JsonResponse
+     * @throws InvalidArgumentException
+     */
+    public function getUserWeatherDetails(Request $request, User $user): JsonResponse
     {
-        [$latitude, $longitude] = explode(',', trim(str_replace(' ', '', $coordinate)));
-
         $highlight = $request->boolean('highlight');
 
-        $weatherData = $this->userService->getWeatherData($highlight, $latitude, $longitude, $user);
+        $weatherData = $this->userService->getWeatherData($highlight, $user->latitude, $user->longitude, $user);
 
         return response()->json([
-            'data' => $weatherData,
+            'weather' => $weatherData,
+            'user' => $user,
         ]);
     }
 }
