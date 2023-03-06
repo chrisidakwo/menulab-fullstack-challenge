@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import UsersWeather from "../views/UsersWeather.vue";
-import UserWeatherDetail from "../views/UserWeatherDetail.vue";
+import UsersWeather from "@/views/UsersWeather.vue";
+import UserWeatherDetail from "@/views/UserWeatherDetail.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

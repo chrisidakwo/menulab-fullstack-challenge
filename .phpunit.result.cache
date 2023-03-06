@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Tests\\Unit\\CoordinateGeneratorTest::test_it_generates_correct_coordinates_for_provided_location_code":5},"times":{"Tests\\Unit\\CoordinateGeneratorTest::test_it_generates_correct_coordinates_for_provided_location_code":0.093}}
