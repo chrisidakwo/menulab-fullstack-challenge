@@ -2,7 +2,13 @@
 module.exports = {
   content: ["./index.html", "./src/**/*.{vue,ts}"],
   theme: {
-    extend: {},
+    screens: {
+      xs: { min: "150px", max: "575px" },
+      sm: "576px",
+      md: "768px",
+      lg: "992px",
+      xl: "1200px",
+    },
     fontFamily: {
       sans: [
         "Roboto",

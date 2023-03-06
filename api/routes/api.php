@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WeatherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return response()->json([
-        'message' => 'all systems are a go',
-        'users' => \App\Models\User::all(),
-    ]);
-});
+Route::get('/', [UserController::class, 'index']);
+
+Route::get('/weather/{coordinate}', [WeatherController::class, 'index']);
+
+
+// - Location
+//- Temperature (day and night) whichever is the current should be highlighted (also show high and low if possible)
+//- Precipitation
+//- Humidity
+//(The higher the humidity the greater the water vapour, and the more rain we're likely to see)
+// Humidity of > 70% forms mist, and > 90% rains
+//- Wind
+//- Visibility
+
+//- Summary (Mostly Sunny)
