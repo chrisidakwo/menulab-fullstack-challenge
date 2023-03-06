@@ -33,7 +33,9 @@ class NationalWeatherService implements WeatherService
             ];
 
             return $this->getForecastSummary($properties['forecast'], [
-                'location' => $location
+                'location' => $location,
+                'longitude' => $longitude,
+                'latitude' => $latitude,
             ]);
         }
 

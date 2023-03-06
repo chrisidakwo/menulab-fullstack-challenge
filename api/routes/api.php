@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\WeatherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [UserController::class, 'index']);
-
-Route::get('/weather/{coordinate}', [WeatherController::class, 'index']);
+Route::get('/{user}/weather/{coordinate}', [UserController::class, 'getUserWeatherDetails']);
 
 
 // - Location
