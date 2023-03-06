@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Services\WeatherService\Contracts\WeatherService;
+use Carbon\Carbon;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Support\Facades\Log;
 use Psr\SimpleCache\InvalidArgumentException;
 
 class UserService
@@ -34,13 +36,12 @@ class UserService
         $data = $this->cacheStore->get($cacheKey);
 
         if (! $data) {
-            $data = match ($highlight) {
-                true => $this->weatherService->getWeatherHighlight($latitude, $longitude),
-                false => $this->weatherService->getWeatherDetails($latitude, $longitude),
-            };
+            $data = $this->weatherService->getWeatherData($highlight, $latitude, $longitude);
 
             // Cache data only if it contains the full response as expected
-            if (array_key_exists('shortDescription', $data)) {
+            if (array_key_exists('shortDescription', $data)
+                || (array_key_exists('series', $data) && count($data['series']))
+            ) {
                 $this->cacheStore->put($cacheKey, $data, now()->addHour()->getTimestamp());
             }
         }

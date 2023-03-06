@@ -10,7 +10,7 @@ const weatherHighlight = ref<WeatherHighlight | null>(null);
 
 const getUserWeatherHighlight = async (user: User) => {
   const response = await fetch(
-    `http://localhost/${user.id}/weather/${user.latitude},${user.longitude}?highlight=true`
+    `http://localhost/${user.id}/weather?highlight=true`
   );
 
   return response.json();
@@ -18,7 +18,7 @@ const getUserWeatherHighlight = async (user: User) => {
 
 onMounted(async () => {
   const data = await getUserWeatherHighlight(props.user);
-  weatherHighlight.value = data.data;
+  weatherHighlight.value = data.weather;
 });
 </script>
 

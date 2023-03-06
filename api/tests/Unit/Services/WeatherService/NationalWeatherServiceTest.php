@@ -39,7 +39,8 @@ class NationalWeatherServiceTest extends TestCase
         /** @var NationalWeatherService $service */
         $service = $this->app->make(NationalWeatherService::class);
 
-        $weatherData = $service->getWeatherHighlight(
+        $weatherData = $service->getWeatherData(
+            true,
             '35.1976',
             '-91.9449'
         );
@@ -64,7 +65,8 @@ class NationalWeatherServiceTest extends TestCase
         /** @var NationalWeatherService $service */
         $service = $this->app->make(NationalWeatherService::class);
 
-        $weatherData = $service->getWeatherDetails(
+        $weatherData = $service->getWeatherData(
+            false,
             '35.1976',
             '-91.9449'
         );
@@ -74,8 +76,9 @@ class NationalWeatherServiceTest extends TestCase
         $series = $weatherData['series'];
 
         $this->assertCount(14, $series);
-        $this->assertContains('Today', array_keys($series));
-        $this->assertContains('Tonight', array_keys($series));
+
+        $this->assertEquals('Today', $series[0]['name']);
+        $this->assertEquals('Tonight', $series[1]['name']);
     }
 
     /**

@@ -53,9 +53,9 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="w-full">
-        <h1>{{ weatherDetail.temperature.value }}</h1>
-      </div>
+<!--      <div class="w-full">-->
+<!--        <h1>{{ weatherDetail.temperature.value }}</h1>-->
+<!--      </div>-->
     </div>
   </div>
 </template>

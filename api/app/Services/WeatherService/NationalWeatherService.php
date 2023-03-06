@@ -17,7 +17,7 @@ class NationalWeatherService implements WeatherService
      *
      * @return array
      */
-    protected function getWeatherData(bool $highlight, string $latitude, string $longitude): array
+    public function getWeatherData(bool $highlight, string $latitude, string $longitude): array
     {
         $url = $this->getWeatherApiUrl($latitude, $longitude);
 
@@ -52,22 +52,6 @@ class NationalWeatherService implements WeatherService
         }
 
         return [];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getWeatherHighlight(string $latitude, string $longitude): array
-    {
-        return $this->getWeatherData(true, $latitude, $longitude);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getWeatherDetails(string $latitude, string $longitude): array
-    {
-        return $this->getWeatherData(false, $latitude, $longitude);
     }
 
     /**
@@ -137,7 +121,8 @@ class NationalWeatherService implements WeatherService
             $periods = $properties['periods'];
 
             foreach ($periods as $period) {
-                $series[$period['name']] = [
+                $series[] = [
+                    'name' => $period['name'],
                     'isDayTime' => $period['isDaytime'],
                     'temperature' => [
                         'value' => $period['temperature'],
