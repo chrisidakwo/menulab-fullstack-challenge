@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $highlight = $request->boolean('highlight');
 
-        $weatherData = $this->userService->getWeatherData($highlight, $user->latitude, $user->longitude, $user);
+        $weatherData = $this->userService->getWeatherData($highlight, $user);
 
         return response()->json([
             'weather' => $weatherData,

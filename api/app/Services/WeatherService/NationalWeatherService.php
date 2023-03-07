@@ -95,7 +95,7 @@ class NationalWeatherService implements WeatherService
             return array_merge($data, $currentWeatherData);
         }
 
-        Log::emergency('FORECAST SUMMARY. Could not get response', [
+        Log::emergency('FORECAST SUMMARY. Could not get expected API response', [
             'status' => $response->status(),
             'json' => $response->json(),
         ]);
@@ -113,10 +113,10 @@ class NationalWeatherService implements WeatherService
     {
         $response = Http::get($url);
 
-        $series = [];
-
         if ($response->ok()) {
             $properties  = $response->json()['properties'];
+
+            $series = [];
 
             $periods = $properties['periods'];
 
@@ -145,11 +145,18 @@ class NationalWeatherService implements WeatherService
                     'shortDescription' => $period['shortForecast'],
                 ];
             }
+
+            return array_merge($data, [
+                'series' => $series,
+            ]);
         }
 
-        return array_merge($data, [
-            'series' => $series,
+        Log::emergency('FORECAST DETAILS. Could not get expected API response', [
+            'status' => $response->status(),
+            'json' => $response->json(),
         ]);
+
+        return array_merge($data, []);
     }
 
     /**
